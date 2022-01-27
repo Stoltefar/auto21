@@ -9,6 +9,6 @@ class FooTest {
 
     @org.junit.jupiter.api.Test
     void myFalseMethod() {
-        assertTrue(Foo.myMethod());
+        assertFalse(Foo.myMethod());
     }
 }

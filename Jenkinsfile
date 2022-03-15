@@ -4,12 +4,12 @@ pipeline {
 
         stage('Build') {
             steps {
-                bat "mvn compile"
+                sh "mvn compile"
             }
         }
         stage('Test') {
             steps {
-                bat "mvn test"
+                sh "mvn test"
             }
             post {
                 always {

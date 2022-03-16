@@ -17,5 +17,15 @@ pipeline {
                 }
             }
         }
+        stage('newman') {
+                    steps {
+                        sh 'newman run Linus_Postman-labb.postman_collection.json --environment Postman-labben.postman_environment.json --reporters junit'
+                    }
+                    post {
+                        always {
+                                junit '**/*xml'
+                        }
+                    }
+        }
     }
 }

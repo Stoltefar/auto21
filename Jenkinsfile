@@ -22,11 +22,6 @@ pipeline {
             }
         }
 
-        stage('Cobertura Coverage') {
-                steps {
-                    sh 'mvn clean cobertura:cobertura'
-                }
-        }
         stage('newman') {
                     steps {
                         sh 'newman run Linus_Postman-labb.postman_collection.json --environment Postman-labben.postman_environment.json --reporters junit'
@@ -37,6 +32,13 @@ pipeline {
                         }
                     }
         }
+
+        stage('Cobertura Coverage') {
+                        steps {
+                            sh 'mvn clean cobertura:cobertura'
+                        }
+        }
+
         stage('Robot Framework System tests with Selenium') {
                     steps {
                         sh 'robot -d Results Tests'

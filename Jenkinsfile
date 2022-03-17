@@ -1,6 +1,10 @@
 pipeline {
     agent any
     stages {
+        stage('Git checkout') {
+            steps {
+                git 'https://github.com/Stoltefar/auto21.git'}
+        }
 
         stage('Build') {
             steps {

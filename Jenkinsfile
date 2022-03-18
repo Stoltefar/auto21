@@ -1,6 +1,8 @@
 pipeline {
     agent any
+
     stages {
+
         stage('Git checkout') {
             steps {
                 git 'https://github.com/Stoltefar/auto21.git'}
@@ -11,6 +13,7 @@ pipeline {
                 sh "mvn compile"
             }
         }
+
         stage('Test') {
             steps {
                 sh "mvn test"
@@ -44,8 +47,6 @@ pipeline {
                         }
         }
 
-
-
         stage('Robot Framework System tests with Selenium') {
                     steps {
                         sh 'robot -d Results Tests'
@@ -69,6 +70,6 @@ pipeline {
                             }
                         }
                     }
-                }
+        }
     }
 }

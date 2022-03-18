@@ -37,12 +37,13 @@ pipeline {
                         steps {
                             sh 'mvn clean cobertura:cobertura'
                         }
+                        post {
+                                        always {
+                                          step([$class: 'CoberturaPublisher', coberturaReportFile: '**/*coverage.xml'])
+                                        }
+                        }
         }
-        post {
-                always {
-                  step([$class: 'CoberturaPublisher', coberturaReportFile: '**/*coverage.xml'])
-                }
-              }
+
 
 
         stage('Robot Framework System tests with Selenium') {

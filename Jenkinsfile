@@ -27,7 +27,7 @@ pipeline {
 
         stage('newman') {
                     steps {
-                        bat 'newman run Linus_Postman-labb.postman_collection.json --environment Postman-labben.postman_environment.json --reporters junit'
+                        sh 'newman run Linus_Postman-labb.postman_collection.json --environment Postman-labben.postman_environment.json --reporters junit'
                     }
                     post {
                         always {

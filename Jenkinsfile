@@ -49,7 +49,7 @@ pipeline {
 
         stage('Robot Framework System tests with Selenium') {
                     steps {
-                        bat 'robot -d Results Tests'
+                        bat 'robot -d Results Tests/labb2LinusVGdel.robot'
                     }
                     post {
                         always {

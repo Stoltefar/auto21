@@ -1,21 +1,75 @@
 pipeline {
     agent any
+
     stages {
+
+        stage('Git checkout') {
+            steps {
+                git 'https://github.com/Stoltefar/auto21.git'}
+        }
 
         stage('Build') {
             steps {
-                bat "mvn compile"
+                sh "mvn compile"
             }
         }
-        stage('FooTest') {
+
+        stage('Test') {
             steps {
-                bat "mvn test"
+                sh "mvn test"
             }
             post {
                 always {
                     junit '**/TEST*.xml'
                 }
             }
+        }
+
+        stage('newman') {
+                    steps {
+                        sh 'newman run Linus_Postman-labb.postman_collection.json --environment Postman-labben.postman_environment.json --reporters junit'
+                    }
+                    post {
+                        always {
+                                junit '**/*xml'
+                        }
+                    }
+        }
+
+        stage('Cobertura Coverage') {
+                        steps {
+                            sh 'mvn clean cobertura:cobertura'
+                        }
+                        post {
+                                        always {
+                                          step([$class: 'CoberturaPublisher', coberturaReportFile: '**/*coverage.xml'])
+                                        }
+                        }
+        }
+
+        stage('Robot Framework System tests with Selenium') {
+                    steps {
+                        sh 'robot -d Results Tests'
+                    }
+                    post {
+                        always {
+                            script {
+                                  step(
+                                        [
+                                          $class              : 'RobotPublisher',
+                                          outputPath          : 'Results',
+                                          outputFileName      : '**/output.xml',
+                                          reportFileName      : '**/report.html',
+                                          logFileName         : '**/log.html',
+                                          disableArchiveOutput: false,
+                                          passThreshold       : 50,
+                                          unstableThreshold   : 40,
+                                          otherFiles          : "**/*.png,**/*.jpg",
+                                        ]
+                                  )
+                            }
+                        }
+                    }
         }
     }
 }

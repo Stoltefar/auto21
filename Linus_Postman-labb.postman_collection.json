@@ -1,0 +1,210 @@
+{
+	"info": {
+		"_postman_id": "c2ba7215-ea4c-41ed-838c-75eae84337d1",
+		"name": "Linus Postman-labb",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Assignments requests",
+			"item": [
+				{
+					"name": "List Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseInJson = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.globals.set(\"fifth_user_id\", responseInJson.data[4].id)\r",
+									"\r",
+									"pm.test(\"Verify status code 200\", () => pm.expect(responseCode.code).to.equal(200));\r",
+									"pm.test(\"Verify response time below 2 seconds\", () => pm.expect(pm.response.responseTime).to.be.below(2000));\r",
+									"\r",
+									"pm.test(\"Verify six results on page\", () => pm.expect(responseInJson.data.length).to.equal(6));\r",
+									"pm.test(\"Verify \\\"avatar\\\" in second result is not null\", () => pm.expect(responseInJson.data[1].avatar).to.not.equal(null));\r",
+									"pm.test(\"Verify \\\"last_name\\\" in third result is Wong\", () => pm.expect(responseInJson.data[2].last_name).to.equal(\"Wong\"));\r",
+									"pm.test(\"Verify \\\"Eve\\\" is in result data\", pm.expect(responseBody).to.include(\"Eve\"));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseInJson = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify status code 200\", () => pm.expect(responseCode.code).to.equal(200));\r",
+									"pm.test(\"Verify response time below 2 seconds\", () => pm.expect(pm.response.responseTime).to.be.below(2000));\r",
+									"\r",
+									"pm.test(\"Verify result id value is same as id called for\", () => pm.expect(responseInJson.data.id).to.equal(pm.globals.get(\"fifth_user_id\")));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/{{fifth_user_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"{{fifth_user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new user MyUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseInJson = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.globals.set(\"myUserId\", responseInJson.id);\r",
+									"\r",
+									"pm.test(\"Verify status code 201\", () => pm.expect(responseCode.code).to.equal(201));\r",
+									"pm.test(\"Verify response time below 2 seconds\", () => pm.expect(pm.response.responseTime).to.be.below(2000));\r",
+									"\r",
+									"pm.test(\"Verify \\\"id\\\" returned is not NULL\", () => pm.expect(responseInJson.id).to.not.equal(\"null\"));\r",
+									"pm.test(\"Verify \\\"createdAt\\\" returned is not NULL\", () => pm.expect(responseInJson.createdAt).to.not.equal(\"null\"));\r",
+									"pm.test(\"Verify \\\"name\\\" returned is correct\", () => pm.expect(responseInJson.name).to.equal(\"Linus Callheim\"));\r",
+									"pm.test(\"Verify \\\"job\\\" returned is dream job\", () => pm.expect(responseInJson.job).to.equal(\"QA specialist\"));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Linus Callheim\",\r\n    \"job\": \"QA specialist\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update MyUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseInJson = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Verify status code 200\", () => pm.expect(responseCode.code).to.equal(200));\r",
+									"pm.test(\"Verify response time below 2 seconds\", () => pm.expect(pm.response.responseTime).to.be.below(2000));\r",
+									"\r",
+									"pm.test(\"Verify updated \\\"job\\\" is Postman Master\", pm.expect(responseInJson.job).to.equal(\"Postman Master\"));\r",
+									"pm.test(\"Verify \\\"updatedAt\\\" returned is not NULL\", () => pm.expect(responseInJson.updatedAt).to.not.equal(\"null\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Linus Callheim\",\r\n    \"job\": \"Postman Master\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/{{myUserId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"{{myUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete MyUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify Status code is 204\", () => pm.expect(pm.response.code).to.equal(204));\r",
+									"pm.test(\"Verify response time below 2 seconds\", () => pm.expect(pm.response.responseTime).to.be.below(2000));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/{{myUserId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"{{myUserId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

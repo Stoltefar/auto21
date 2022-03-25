@@ -10,13 +10,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh "mvn compile"
+                bat "mvn compile"
             }
         }
 
         stage('Test') {
             steps {
-                sh "mvn test"
+                bat "mvn test"
             }
             post {
                 always {
@@ -27,7 +27,7 @@ pipeline {
 
         stage('newman') {
                     steps {
-                        sh 'newman run Linus_Postman-labb.postman_collection.json --environment Postman-labben.postman_environment.json --reporters junit'
+                        bat 'newman run Linus_Postman-labb.postman_collection.json --environment Postman-labben.postman_environment.json --reporters junit'
                     }
                     post {
                         always {
@@ -38,7 +38,7 @@ pipeline {
 
         stage('Cobertura Coverage') {
                         steps {
-                            sh 'mvn clean cobertura:cobertura'
+                            bat 'mvn clean cobertura:cobertura'
                         }
                         post {
                                         always {
@@ -49,7 +49,7 @@ pipeline {
 
         stage('Robot Framework System tests with Selenium') {
                     steps {
-                        sh 'robot -d Results Tests'
+                        bat 'robot -d Results Tests'
                     }
                     post {
                         always {

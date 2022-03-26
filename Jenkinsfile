@@ -71,5 +71,22 @@ pipeline {
                         }
                     }
         }
+        // Lånat från https://igorski.co/sonarqube-scans-using-jenkins-declarative-pipelines/
+        // Behöver nog kolla mer där...
+        stage('SonarCloud') {
+          environment {
+            SCANNER_HOME = tool 'SonarQubeScanner'
+            ORGANIZATION = "Stoltefar-github"
+            PROJECT_NAME = "Stoltefar_jenkins-pipeline-as-code"
+          }
+          steps {
+            withSonarQubeEnv('SonarCloudOne') {
+                sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION \
+                -Dsonar.java.binaries=build/classes/java/ \
+                -Dsonar.projectKey=$PROJECT_NAME \
+                -Dsonar.sources=.'''
+            }
+          }
+        }
     }
 }

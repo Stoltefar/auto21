@@ -14,6 +14,7 @@ Suite Teardown  End Web Test
 
 *** Variables ***
 ${URL}  http://rental11.infotiv.net/
+${BROWSER}  chrome
 
 *** Test Cases ***
 Book A Car As An Existing User

@@ -5,7 +5,7 @@ pipeline {
 
         stage('Git checkout') {
             steps {
-                git 'https://github.com/Stoltefar/auto21.git'}
+                git branch: 'master' url: 'https://github.com/Stoltefar/auto21.git'}
         }
 
         stage('Build') {
@@ -49,7 +49,7 @@ pipeline {
 
         stage('Robot Framework System tests with Selenium') {
                     steps {
-                        sh 'robot -d Results Tests/CarRentalTests.robot'
+                        sh 'robot --variable BROWSER:headlesschrome -d Results Tests/CarRentalTests.robot'
                     }
                     post {
                         always {

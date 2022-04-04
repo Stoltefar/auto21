@@ -5,7 +5,7 @@ pipeline {
 
         stage('Git checkout') {
             steps {
-                git branch: 'master' url: 'https://github.com/Stoltefar/auto21.git'}
+                git branch:'master', url: 'https://github.com/Stoltefar/auto21.git'}
         }
 
         stage('Build') {

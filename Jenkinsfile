@@ -5,6 +5,7 @@ pipeline {
 
         stage('Git checkout') {
             steps {
+                cleanWs()
                 git branch:'master', url: 'https://github.com/Stoltefar/auto21.git'}
         }
 
